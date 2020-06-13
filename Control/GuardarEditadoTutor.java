@@ -2,7 +2,9 @@
 package Control;
 
 import GUI.MenuAdministrador;
+import Logico.Administrador;
 import Logico.Tutor;
+import Persistencia.ConexionBD;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -11,6 +13,7 @@ import javax.swing.JTextField;
 
 public class GuardarEditadoTutor extends EditarTutorActionListener {
     private Tutor tutor;
+    private Administrador administrador;
     private JTextField nombre,
                        correo;
     private JPasswordField contrasenia,
@@ -21,7 +24,7 @@ public class GuardarEditadoTutor extends EditarTutorActionListener {
     public GuardarEditadoTutor(Object[] paquete, JTextField[] editables,
             JTextField nombre, JTextField correo, JPasswordField contrasenia,
             JPasswordField nuevaContrasenia, JPasswordField confirmacion,
-            Tutor tutor, MenuAdministrador menu) {
+            Tutor tutor, MenuAdministrador menu, Administrador administrador) {
         super(paquete, editables);
         this.tutor=tutor;
         this.nombre=nombre;
@@ -30,10 +33,15 @@ public class GuardarEditadoTutor extends EditarTutorActionListener {
         this.nuevaContrasenia=nuevaContrasenia;
         this.confirmacion=confirmacion;
         this.menu=menu;
+        this.administrador=administrador;
     }
     
     @Override
     public void actionPerformed(ActionEvent ae) {
+        ConexionBD bd;
+        String sentencia="INSERT INTO `Admin_Tutor` (`idRegistro`, "
+                + "`emailtutor`, `emailadmin`, `idAccion`) VALUES (NULL, '"
+                +correo.getText()+"', '"+administrador.getCorreo()+"', '3');";
         boolean aprovado = tutor.compararContrasenia(contrasenia.getText());
         if(aprovado){
             if(!nuevaContrasenia.getText().equals(confirmacion.getText())){
@@ -46,6 +54,8 @@ public class GuardarEditadoTutor extends EditarTutorActionListener {
                 if(!nuevaContrasenia.getText().equals("")){
                     tutor.setContrasenia(nuevaContrasenia.getText());
                 }
+                bd = new ConexionBD();
+                bd.administrar(sentencia);
                 menu.actualizar();
                 super.actionPerformed(ae);
             }
