@@ -265,7 +265,8 @@ public class InformacionTutorPanel extends JPanel{
         guardar.removeActionListener(accionGuardar);
         accionGuardar = new GuardarEditadoTutor(
                 paquete, editables, nombre, correo, contrasenia, 
-                nuevaContrasenia, confirmacion, this.tutor, menu
+                nuevaContrasenia, confirmacion, this.tutor, menu,
+                administrador
         );
         guardar.addActionListener(accionGuardar);
     }

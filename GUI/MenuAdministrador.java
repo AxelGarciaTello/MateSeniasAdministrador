@@ -1,7 +1,7 @@
 
 package GUI;
 
-import Control.IrRegistroActionListener;
+import Control.IrRegistroTutorActionListener;
 import Control.SeleccionarMenuAdministradorActionListener;
 import Logico.Administrador;
 import Logico.Tutor;
@@ -42,7 +42,7 @@ public class MenuAdministrador extends MenuFrame {
         crearFondo();
         super.agregarFondo(fondo);
         informacionTutor = new InformacionTutorPanel(administrador, this);
-        informacionNinio = new InformacionNinioPanel();
+        informacionNinio = new InformacionNinioPanel(administrador);
         supermenu = new JPanel();
         supermenu = new JPanel();
         supermenu.setLayout(new CardLayout());
@@ -104,8 +104,7 @@ public class MenuAdministrador extends MenuFrame {
         nuevoTutor.setBackground(new Color(56, 87, 35));
         nuevoTutor.setForeground(new Color(255, 255, 255));
         nuevoTutor.setBorder(null);
-        nuevoTutor.addActionListener(
-                new IrRegistroActionListener(this, administrador)
+        nuevoTutor.addActionListener(new IrRegistroTutorActionListener(this, administrador)
         );
         menu.add(nuevoTutor, constraints);
         constraints.gridy+=1;

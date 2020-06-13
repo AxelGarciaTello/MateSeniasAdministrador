@@ -42,7 +42,9 @@ public class IngresoAdministrador extends IngresoFrame {
         contenedor.add(contrasenia);
         contenedor.add(ingresar);
         ingresar.addActionListener(
-                new IngresarAdministradorActionListener(this)
+                new IngresarAdministradorActionListener(
+                        this, super.getNombre(), contrasenia
+                )
         );
     }
     

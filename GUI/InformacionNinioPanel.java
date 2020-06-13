@@ -4,7 +4,10 @@ package GUI;
 import Control.AgregarNinioActionListener;
 import Control.EditarNinioActionListener;
 import Control.EliminarNinioActionListener;
+import Control.IrAgregarNinioActionListener;
+import Control.IrEditarNinioActionListener;
 import Control.VerProgresoNinioListSelectionListener;
+import Logico.Administrador;
 import Logico.Ninio;
 import Logico.Tutor;
 import java.awt.BorderLayout;
@@ -30,17 +33,18 @@ public class InformacionNinioPanel extends JPanel {
                     eliminar;
     private JProgressBar[] progresos;
     private Tutor tutor;
+    private Administrador administrador;
     private VerProgresoNinioListSelectionListener lista;
-    private AgregarNinioActionListener agregar;
-    private EditarNinioActionListener edit;
+    private IrAgregarNinioActionListener agregar;
+    private IrEditarNinioActionListener edit;
     private EliminarNinioActionListener elim;
     
-    
-    public InformacionNinioPanel(){
+    public InformacionNinioPanel(Administrador administrador){
         lista=null;
         agregar=null;
         edit=null;
         elim=null;
+        this.administrador=administrador;
         initComponents();
     }
     
@@ -201,13 +205,17 @@ public class InformacionNinioPanel extends JPanel {
         this.tutor=tutor;
         actualizar();
         nuevo.removeActionListener(agregar);
-        agregar = new AgregarNinioActionListener(this, tutor);
+        agregar = new IrAgregarNinioActionListener(this, tutor, administrador);
         nuevo.addActionListener(agregar);
         editar.removeActionListener(edit);
-        edit = new EditarNinioActionListener(this, ninios, tutor);
+        edit = new IrEditarNinioActionListener(
+                this, ninios, tutor, administrador
+        );
         editar.addActionListener(edit);
         eliminar.removeActionListener(elim);
-        elim = new EliminarNinioActionListener(this, ninios, tutor);
+        elim = new EliminarNinioActionListener(
+                this, ninios, tutor, administrador
+        );
         eliminar.addActionListener(elim);
     }
     

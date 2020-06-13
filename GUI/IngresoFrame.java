@@ -34,7 +34,7 @@ public class IngresoFrame extends JFrame{
         etiqueta[0].setLocation(40, 15);
         etiqueta[0].setFont(new Font("Ubuntu", 0, 35));
         etiqueta[0].setForeground(new Color(255, 255, 255));
-        etiqueta[1] = new JLabel("Nombre de usuario.");
+        etiqueta[1] = new JLabel("Correo de usuario.");
         etiqueta[1].setSize(200,25);
         etiqueta[1].setLocation(50, 100);
         etiqueta[1].setFont(new Font("Ubuntu", 0, 20));
@@ -63,6 +63,10 @@ public class IngresoFrame extends JFrame{
     
     public Container getContenedor(){
         return contenedor;
+    }
+    
+    public JTextField getNombre(){
+        return nombreUsuario;
     }
     
 }
