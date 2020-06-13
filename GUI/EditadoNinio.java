@@ -2,41 +2,47 @@
 package GUI;
 
 import Control.CerrarVentanaActionListener;
-import Control.GuardarRegistroTutorActionListener;
+import Control.EditarNinioActionListener;
 import Logico.Administrador;
+import Logico.Tutor;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JList;
 
-
-public class RegistroTutor extends RegistroFrame {
+public class EditadoNinio extends RegistroFrame {
     private JButton guardar,
                     cancelar;
-    private MenuAdministrador menu;
+    private InformacionNinioPanel ventana;
+    private Tutor tutor;
+    private JList ninios;
     private Administrador administrador;
     
-    public RegistroTutor(MenuAdministrador menu,
-            Administrador administrador){
+    public EditadoNinio(InformacionNinioPanel ventana,
+            JList ninios, Tutor tutor, Administrador administrador){
         super();
-        this.menu=menu;
+        this.ventana=ventana;
+        this.tutor=tutor;
+        this.ninios=ninios;
         this.administrador=administrador;
         initComponents();
+        super.bloquearCorreo();
+        super.getCorreo().setText(tutor.getCorreo());
     }
     
     private void initComponents(){
-        int a=0,
-            x=80;
-        guardar = new JButton("Registrate");
+        guardar = new JButton("Guardar");
         guardar.setSize(240, 30);
         guardar.setLocation(30, 365);
         guardar.setFont(new Font("Ubuntu", 0, 20));
         guardar.setBorder(null);
         guardar.setBackground(new Color(47, 55, 74));
         guardar.setForeground(new Color(255, 255, 255));
-        guardar.addActionListener(new GuardarRegistroTutorActionListener(
-                        super.getNombre(), super.getCorreo(),
-                        super.getContrasenia(), super.getConfirmacion(), this,
-                        menu, administrador
+        guardar.addActionListener(
+                new EditarNinioActionListener(
+                        ventana, this, ninios, tutor, super.getNombre(),
+                        super.getCorreo(), super.getContrasenia(),
+                        super.getConfirmacion(), administrador
                 )
         );
         super.agregar(guardar);
@@ -53,6 +59,7 @@ public class RegistroTutor extends RegistroFrame {
         super.agregar(cancelar);
     }
     
+    @Override
     public void destruir(){
         super.destruir();
         if(guardar!=null){
@@ -61,6 +68,5 @@ public class RegistroTutor extends RegistroFrame {
         if(cancelar!=null){
             cancelar=null;
         }
-        System.gc();
     }
 }
