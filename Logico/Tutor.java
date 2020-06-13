@@ -1,6 +1,9 @@
 
 package Logico;
 
+import Persistencia.ConexionBD;
+import javax.swing.JOptionPane;
+
 
 public class Tutor {
     private String nombre,
@@ -63,15 +66,51 @@ public class Tutor {
     }
     
     public void setNombre(String nombre){
-        this.nombre=nombre;
+        ConexionBD bd = new ConexionBD();
+        String sentencia = "UPDATE `tutor` SET `usr` = '"+nombre
+                +"' WHERE `tutor`.`email` = '"+correo+"';";
+        boolean aceptacion = bd.administrar(sentencia);
+        if(aceptacion){
+            this.nombre=nombre;
+        }
+        else{
+            JOptionPane.showMessageDialog(
+                    null, "No se pudo actualizar el nombre", "Nombre",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
     
     public void setCorreo(String correo){
-        this.correo=correo;
+        ConexionBD bd = new ConexionBD();
+        String sentencia = "UPDATE `tutor` SET `email` = '"+correo
+                +"' WHERE `tutor`.`email` = '"+this.correo+"'; ";
+        boolean aceptacion = bd.administrar(sentencia);
+        if(aceptacion){
+            this.correo=correo;
+        }
+        else{
+            JOptionPane.showMessageDialog(
+                    null, "No se pudo actualizar el correo", "Correo", 
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
     
     public void setContrasenia(String contrasenia){
-        this.contrasenia=contrasenia;
+        ConexionBD bd = new ConexionBD();
+        String sentencia = "UPDATE `tutor` SET `psw` = sha2('"+contrasenia
+                +"', 224) WHERE `tutor`.`email` = '"+correo+"'; ";
+        boolean aceptacion = bd.administrar(sentencia);
+        if(aceptacion){
+            this.contrasenia=contrasenia;
+        }
+        else{
+            JOptionPane.showMessageDialog(
+                    null, "No se pudo actualizar la contraseña", "Contraseña",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
     
     public void setNinio(Ninio nuevo){
@@ -92,22 +131,39 @@ public class Tutor {
         }
     }
     
+    public void setNinio(Ninio[] ninios){
+        this.ninios=ninios;
+    }
+    
     public void eliminarNinio(int posicion){
         int tamanio=ninios.length,
             x=0,
             y=0;
-        Ninio[] nuevos = new Ninio[tamanio-1];
-        while(x<(tamanio-1)){
-            if(y==posicion){
-                ninios[y]=null;
-                y++;
+        Ninio[] nuevos;
+        ConexionBD bd = new ConexionBD();
+        String sentencia="DELETE FROM `infante` WHERE `infante`.`usr` = '"
+                +ninios[posicion].getNombre()+"';";
+        boolean aceptacion=bd.administrar(sentencia);
+        if(aceptacion){
+            nuevos = new Ninio[tamanio-1];
+            while(x<(tamanio-1)){
+                if(y==posicion){
+                    ninios[y]=null;
+                    y++;
+                }
+                else{
+                    nuevos[x]=ninios[y];
+                    x++;
+                    y++;
+                }
             }
-            else{
-                nuevos[x]=ninios[y];
-                x++;
-                y++;
-            }
+            ninios=nuevos;
         }
-        ninios=nuevos;
+        else{
+            JOptionPane.showMessageDialog(
+                    null, "No se pudo eliminar la cuenta", "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 }

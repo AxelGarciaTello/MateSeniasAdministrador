@@ -1,9 +1,14 @@
 
 package Logico;
 
+import Persistencia.ConexionBD;
+import javax.swing.JOptionPane;
+
 
 public class Ninio {
-    private String nombre;
+    private String nombre,
+                   correo,
+                   contrasenia;
     private Progreso[] progresos;
     
     public Ninio(String nombre){
@@ -40,8 +45,18 @@ public class Ninio {
         }
     }
     
-    public Ninio(String nombre, Progreso[] progresos){
+    public Ninio(String nombre, String correo,
+            String contrasenia){
         this.nombre=nombre;
+        this.correo=correo;
+        this.contrasenia=contrasenia;
+    }
+    
+    public Ninio(String nombre, String correo,
+            String contrasenia, Progreso[] progresos){
+        this.nombre=nombre;
+        this.correo=correo;
+        this.contrasenia=contrasenia;
         this.progresos=progresos;
     }
     
@@ -49,6 +64,12 @@ public class Ninio {
         int x;
         if(nombre!=null){
             nombre=null;
+        }
+        if(correo!=null){
+            correo=null;
+        }
+        if(contrasenia!=null){
+            contrasenia=null;
         }
         for(x=0; x<24; x++){
             if(progresos[x]!=null){
@@ -63,6 +84,7 @@ public class Ninio {
         return nombre;
     }
     
+    
     public Progreso getProgreso(int progreso){
         return progresos[progreso];
     }
@@ -72,7 +94,39 @@ public class Ninio {
     }
     
     public void setNombre(String nombre){
-        this.nombre=nombre;
+        ConexionBD bd = new ConexionBD();
+        String sentencia="UPDATE `infante` SET `usr` = '"+nombre
+                +"' WHERE `infante`.`usr` = '"+this.nombre+"';";
+        boolean aceptacion = bd.administrar(sentencia);
+        if(aceptacion){
+            this.nombre=nombre;
+        }
+        else{
+            JOptionPane.showMessageDialog(
+                    null, "No se pudo modificar el nombre", "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+    
+    public void setContrasenia(String contrasenia){
+        ConexionBD bd = new ConexionBD();
+        String sentencia="UPDATE `infante` SET `psw` = sha2('"+contrasenia
+                +"', 224) WHERE `infante`.`usr` = '"+nombre+"'; ";
+        boolean aceptacion = bd.administrar(sentencia);
+        if(aceptacion){
+            this.contrasenia=contrasenia;
+        }
+        else{
+            JOptionPane.showMessageDialog(
+                    null, "No se pudo modificar la contraseña", "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+    
+    public void setProgresos(Progreso[] progresos){
+        this.progresos=progresos;
     }
     
 }
